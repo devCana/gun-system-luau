@@ -259,7 +259,9 @@ function WeaponComponent:stopFiring()
 	if self.fireThread then
 		self.fireThread = nil
 	end
-end--[[
+end
+
+--[[
 	Checks if the weapon can fire
 
 	@return boolean - true if weapon can fire, false otherwise
@@ -282,9 +284,6 @@ function WeaponComponent:canFire(): boolean
 
 	return (currentTime - self.lastShotTime) >= fireRate
 end
-
---[[
-	Reloads the weapon to full capacity
 
 --[[
 	Reloads the weapon with a full magazine

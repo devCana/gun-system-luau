@@ -78,8 +78,13 @@ function WeaponController:setupInputBindings()
 	UserInputService.InputBegan:Connect(function(input)
 		if input.UserInputType == Enum.UserInputType.MouseButton1 then
 			self:onFireBegin()
-		elseif input.KeyCode == Enum.KeyCode.R then
-			self:onReload()
+		end
+	end)
+
+	-- Stop firing on input end
+	UserInputService.InputEnded:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 then
+			self:onFireEnd()
 		end
 	end)
 
@@ -89,15 +94,7 @@ function WeaponController:setupInputBindings()
 			return Enum.ContextActionResult.Pass
 		end
 
-		local weapon = currentWeapon
-		if not weapon then
-			return Enum.ContextActionResult.Pass
-		end
-
-		task.spawn(function()
-			weapon:reload()
-		end)
-
+		self:onReload()
 		return Enum.ContextActionResult.Pass
 	end, false, Enum.KeyCode.R, Enum.KeyCode.ButtonX)
 end
@@ -233,6 +230,32 @@ end
 -- Get current character
 function WeaponController:getCurrentCharacter()
 	return currentCharacter
+end
+
+-- Handle fire begin input
+function WeaponController:onFireBegin()
+	local weapon = self:getEquippedWeapon()
+	if weapon then
+		weapon:startFiring()
+	end
+end
+
+-- Handle fire end input
+function WeaponController:onFireEnd()
+	local weapon = self:getEquippedWeapon()
+	if weapon then
+		weapon:stopFiring()
+	end
+end
+
+-- Handle reload input
+function WeaponController:onReload()
+	local weapon = self:getEquippedWeapon()
+	if weapon then
+		task.spawn(function()
+			weapon:reload()
+		end)
+	end
 end
 
 return WeaponController
