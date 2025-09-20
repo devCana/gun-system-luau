@@ -1,0 +1,12 @@
+
+/Packages
+
+# Project place file
+/formula-freestyle.rbxlx
+
+# Roblox Studio lock files
+/*.rbxlx.lock
+/*.rbxl.lock
+/wally.lock
+
+/sourcemap.json
